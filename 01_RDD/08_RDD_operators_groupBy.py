@@ -12,8 +12,9 @@ if __name__ == '__main__':
 
     # join
     rdd3 = spark_context.parallelize(
-        [(1001, "john"), (1001, "sam"), (1002, "shelvin"), (1003, "mike"), (1004, "lily")])
+        [(1001, "john"), (1001, "sam"), (1002, "shelvin"), (1003, "mike"), (1004, "lily")], 3)
     rdd4 = spark_context.parallelize([(1001, "dev"), (1001, "ba"), (1003, "tl")])
+    print(rdd3.glom().collect())
     # print(rdd3.join(rdd4).collect())
     # print(rdd3.leftOuterJoin(rdd4).collect())
     # print(rdd3.rightOuterJoin(rdd4).collect())
@@ -21,4 +22,4 @@ if __name__ == '__main__':
     # intersection
     rdd5 = spark_context.parallelize([(1001, "john"), (1001, "sam"), (1002, "shelvin")])
     rdd6 = spark_context.parallelize([(1001, "john"), (1001, "david"), (1003, "shelvin")])
-    print(rdd5.intersection(rdd6).collect())
+    # print(rdd5.intersection(rdd6).collect())
