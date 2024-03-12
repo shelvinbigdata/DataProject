@@ -10,10 +10,15 @@ if __name__ == '__main__':
     rdd2 = spark_context.parallelize([1, 2, 3, "hadoop"])
     # print(rdd2.union(rdd1).union(rdd2).collect())
 
-# join
+    # join
     rdd3 = spark_context.parallelize(
         [(1001, "john"), (1001, "sam"), (1002, "shelvin"), (1003, "mike"), (1004, "lily")])
     rdd4 = spark_context.parallelize([(1001, "dev"), (1001, "ba"), (1003, "tl")])
-    print(rdd3.join(rdd4).collect())
-    print(rdd3.leftOuterJoin(rdd4).collect())
-    print(rdd3.rightOuterJoin(rdd4).collect())
+    # print(rdd3.join(rdd4).collect())
+    # print(rdd3.leftOuterJoin(rdd4).collect())
+    # print(rdd3.rightOuterJoin(rdd4).collect())
+
+    # intersection
+    rdd5 = spark_context.parallelize([(1001, "john"), (1001, "sam"), (1002, "shelvin")])
+    rdd6 = spark_context.parallelize([(1001, "john"), (1001, "david"), (1003, "shelvin")])
+    print(rdd5.intersection(rdd6).collect())
