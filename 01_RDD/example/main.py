@@ -1,7 +1,8 @@
 # coding: utf8
 from pyspark import SparkConf, SparkContext
 from pyspark.storagelevel import StorageLevel
-from defs import context_jieba, filter_words, append_words
+
+from defs import extract_id_and_words
 
 if __name__ == '__main__':
     spark_conf = SparkConf().setAppName("search_log_analyse")
@@ -11,10 +12,16 @@ if __name__ == '__main__':
     split_rdd = file_rdd.map(lambda line: line.split("\t"))
     split_rdd.persist(StorageLevel.DISK_ONLY)
 
-    context_rdd = split_rdd.map(lambda ls: ls[2])
-    words_rdd = context_rdd.flatMap(context_jieba)
-    filtered_rdd = words_rdd.filter(filter_words)
-    final_words = filtered_rdd.map(append_words)
+    # task1 top5 keywords
+    # context_rdd = split_rdd.map(lambda ls: ls[2])
+    # words_rdd = context_rdd.flatMap(context_jieba)
+    # filtered_rdd = words_rdd.filter(filter_words)
+    # final_words = filtered_rdd.map(append_words)
+    # sorted_rdd = final_words.reduceByKey(lambda a, b: a + b).sortBy(lambda t: t[1], False, 1)
+    # print(sorted_rdd.take(5))
 
-    sorted_rdd = final_words.reduceByKey(lambda a, b: a + b).sortBy(lambda t: t[1], False, 1)
-    print(sorted_rdd.take(5))
+    # task2 top5 id_keywords
+    id_context_rdd = split_rdd.map(lambda ls: (ls[1], ls[2]))
+    id_keyword_rdd = id_context_rdd.flatMap(extract_id_and_words)
+    sorted_id_keyword_rdd = id_keyword_rdd.reduceByKey(lambda a, b: a + b).sortBy(lambda t: t[1], False, 1)
+    print(sorted_id_keyword_rdd.take(5))
