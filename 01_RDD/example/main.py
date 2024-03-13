@@ -32,3 +32,4 @@ if __name__ == '__main__':
     hour_rdd = time_rdd.map(lambda time_str: (time_str.split(":")[0], 1))
     sorted_hour_rdd = hour_rdd.reduceByKey(add).sortBy(lambda t: t[1], False, 1)
     print(sorted_hour_rdd.take(5))
+    split_rdd.unpersist()
